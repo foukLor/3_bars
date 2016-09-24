@@ -1,8 +1,10 @@
 import json
 import sys
-
+import os
 
 def load_data(filepath):
+    if not os.path.exists(filepath):
+        return None
     with open(filepath,'r') as data_file:
         data = json.load(data_file)
     return data
@@ -21,9 +23,9 @@ def get_smallest_bar(data):
 
 #we use eucledian metrics
 def get_closest_bar(data, longitude, latitude):
-    minD = min(data,key= lambda bar: ((longitude - bar['Cells']['geoData']['coordinates'][0])**2
+    min_destination = min(data,key= lambda bar: ((longitude - bar['Cells']['geoData']['coordinates'][0])**2
          + (latitude - bar['Cells']['geoData']['coordinates'][1])**2 )**(1.0/2))
-    return minD['Cells']['Name']
+    return min_destination['Cells']['Name']
 
 
 
@@ -33,9 +35,14 @@ if __name__ == '__main__':
     x_gps = float(input("longitude:"))
     y_gps = float(input("latitude:"))
     data = load_data(sys.argv[1])
+    if data is None :
+        exit("data is invalid")
     max_bar = get_biggest_bar(data)
     min_bar = get_smallest_bar(data)
-    d = get_closest_bar(data, x_gps, y_gps)
+    near_bar = get_closest_bar(data, x_gps, y_gps)
+    print("\nThe biggest moscow's bar is:")
     print(max_bar)
-    print(d)
+    print("\nThe smallest moscow's bar is ")
     print(min_bar)
+    print("\nThe nearest moscow's bar is ")
+    print(near_bar)
