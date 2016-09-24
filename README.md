@@ -6,8 +6,8 @@ This script is useful for find the biggest, the smallest and the nearest bar fro
 For running please use python3.5
 
 ## Usage
-'''sh
+```sh
 python bars.py path_to_file
-'''
+```
 
 The file is a json document.
